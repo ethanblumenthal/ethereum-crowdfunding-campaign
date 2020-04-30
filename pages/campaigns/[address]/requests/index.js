@@ -9,23 +9,32 @@ export const getServerSideProps = async (ctx) => {
   const { address } = ctx.query;
   const campaign = Campaign(address);
   const requestCount = await campaign.methods.getRequestsCount().call();
+  const approversCount = await campaign.methods.approversCount().call();
 
-  const requests = await Promise.all(
+  const requestData = await Promise.all(
     Array(parseInt(requestCount))
       .fill()
       .map((elm, idx) => {
         return campaign.methods.requests(idx).call();
       })
   );
-  return { props: { address, requests, requestCount } };
+
+  const requests = JSON.parse(JSON.stringify(requestData));
+  return { props: { address, requests, requestCount, approversCount } };
 };
 
-const RequestIndex = ({ address, requests, requestCount }) => {
+const RequestIndex = ({ address, requests, requestCount, approversCount }) => {
   const { Header, HeaderCell, Body } = Table;
 
-  renderRows = () => {
+  const renderRows = () => {
     return requests.map((request, idx) => (
-      <RequestRow key={idx} id={idx} request={request} address={address} />
+      <RequestRow
+        key={idx}
+        id={idx}
+        address={address}
+        request={request}
+        approversCount={approversCount}
+      />
     ));
   };
 
@@ -34,7 +43,9 @@ const RequestIndex = ({ address, requests, requestCount }) => {
       <h3>Request List</h3>
       <Link href={`/campaigns/${address}/requests/new`}>
         <a>
-          <Button primary>Add Request</Button>
+          <Button primary floated="right" style={{ marginBottom: "10px" }}>
+            Add Request
+          </Button>
         </a>
       </Link>
 
@@ -51,6 +62,7 @@ const RequestIndex = ({ address, requests, requestCount }) => {
 
         <Body>{renderRows()}</Body>
       </Table>
+      <div>Found {requestCount} requests.</div>
     </Layout>
   );
 };
