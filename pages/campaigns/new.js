@@ -24,6 +24,7 @@ const CampaignNew = () => {
     }
 
     setLoading(false);
+    setMinimum("");
   };
 
   return (
