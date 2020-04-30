@@ -1,5 +1,14 @@
 import Web3 from "web3";
 
-web3 = new Web3(window.web3.currentProvider);
+let web3;
+
+if (typeof window !== "undefined" && typeof window.web3 !== "undefined") {
+  web3 = new Web3(window.web3.currentProvider);
+} else {
+  const provider = new Web3.providers.HttpProvider(
+    "https://rinkeby.infura.io/v3/a110ddb903254a8b9d046fcbfc40fa35"
+  );
+  web3 = new Web3(provider);
+}
 
 export default web3;
