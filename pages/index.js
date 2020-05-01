@@ -4,7 +4,7 @@ import Link from "next/link";
 import factory from "../ethereum/factory";
 import Layout from "../components/Layout";
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const campaigns = await factory.methods.getDeployedCampaigns().call();
   return { props: { campaigns } };
 };

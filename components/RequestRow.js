@@ -1,4 +1,5 @@
 import React from "react";
+import Router from "next/router";
 import { Table, Button } from "semantic-ui-react";
 import Campaign from "../ethereum/campaign";
 import web3 from "../ethereum/web3";
@@ -13,6 +14,7 @@ const RequestRow = ({ id, address, request, approversCount }) => {
     await campaign.methods.approveRequest(id).send({
       from: accounts[0],
     });
+    Router.replace(`/campaigns/${address}/requests`);
   };
 
   const onFinalize = async () => {
@@ -21,6 +23,7 @@ const RequestRow = ({ id, address, request, approversCount }) => {
     await campaign.methods.finalizeRequest(id).send({
       from: accounts[0],
     });
+    Router.replace(`/campaigns/${address}/requests`);
   };
 
   return (
