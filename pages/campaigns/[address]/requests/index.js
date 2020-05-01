@@ -40,7 +40,11 @@ const RequestIndex = ({ address, requests, requestCount, approversCount }) => {
 
   return (
     <Layout>
+      <Link href={`/campaigns/${address}`}>
+        <a>Back</a>
+      </Link>
       <h3>Request List</h3>
+
       <Link href={`/campaigns/${address}/requests/new`}>
         <a>
           <Button primary floated="right" style={{ marginBottom: "10px" }}>
